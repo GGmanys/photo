@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ggman.photo.mapper.YsAdminMapper">
+    <select id="getYsAdminById" resultType="com.ggman.photo.bean.YsAdmin">
+        SELECT  * FROM  ys_admin  WHERE  id=#{id} and sign=0
+    </select>
+    
+    <select id="getYsAdminByName" resultType="com.ggman.photo.bean.YsAdmin">
+        select * from  ys_admin WHERE name =#{name} and sign=0
+    </select>
+<!--    <insert id="insertEmp">
+        INSERT INTO employee(lastNaem,gender,email,d_id) VALUES (#{lastNaem},#{gender},#{email},#{dId})
+    </insert>-->
+</mapper>
