@@ -1,6 +1,9 @@
 package com.ggman.photo.controller;
 
 import com.ggman.photo.bean.YsAdmin;
+import com.ggman.photo.bean.YsUser;
+import com.ggman.photo.mapper.YsAdminMapper;
+import com.ggman.photo.mapper.YsUserMapper;
 import com.ggman.photo.service.YsAdminService;
 import org.apache.catalina.security.SecurityUtil;
 import org.apache.shiro.SecurityUtils;
@@ -10,12 +13,14 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.websocket.server.PathParam;
 import java.security.Security;
 
 /**
@@ -28,7 +33,10 @@ public class LoginController {
 
     @Autowired
     YsAdminService ysAdminService;
+    @Autowired
+    YsUserMapper ysUserMapper;
 
+    //采用redis 存取 session 管理登录
     @RequestMapping(value = "login", method = RequestMethod.GET)
     public String login(HttpServletRequest request) {
         String name = request.getParameter("name");
@@ -43,7 +51,7 @@ public class LoginController {
         }
         return "user/index";
     }
-
+    //采用shiro 管理登录
     @RequestMapping(value = "login_1", method = RequestMethod.GET)
     public String login_1(String name , String password, Model model){
         Subject subject = SecurityUtils.getSubject();
@@ -57,7 +65,7 @@ public class LoginController {
             model.addAttribute("msg","密码错误");
             return  "login";
         }
-        return "";
+        return "user/index";
     }
 
     /**
@@ -68,10 +76,26 @@ public class LoginController {
      */
     @RequestMapping(value = "isValid", method = RequestMethod.GET)
     public String isSessionValid(HttpServletRequest request) {
-        //简化if-else表达式（其实很多地方可以简化的，这里为了方便新手朋友可以看得顺畅点，我尽量不简化）
+        //简化if-else表达式
         return request.isRequestedSessionIdValid() ? "ok" : "no";
 
     }
+
+    /**
+     * 注册
+     */
+    @GetMapping(value = "register")
+    public String register(YsUser ysUser){
+        try {
+            Integer insert = ysUserMapper.insert(ysUser);
+        }catch (Exception e){
+            return "出现错误，请重试";
+        }
+        //注册成功 跳转到登录页面
+        return "user/login";
+
+    }
+
     /**
      * 注销登录
      * @param session
