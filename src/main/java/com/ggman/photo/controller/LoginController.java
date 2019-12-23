@@ -36,21 +36,21 @@ public class LoginController {
     @Autowired
     YsUserMapper ysUserMapper;
 
-    //采用redis 存取 session 管理登录
+ /*   //采用redis 存取 session 管理登录
     @RequestMapping(value = "login", method = RequestMethod.GET)
     public String login(HttpServletRequest request) {
         String name = request.getParameter("name");
         String password = request.getParameter("password");
         YsAdmin ysAdmin = ysAdminService.getYsAdmin(name, password);
         if (ysAdmin.getName().equals(name) && ysAdmin.getPassword().equals(password)) {
-            /*如果已经存在Session的话，直接返回它；没有就创建一个，再返回
-             * 当然Session是自动放在response中的Header中的，这里不用做其他处理*/
+            *//*如果已经存在Session的话，直接返回它；没有就创建一个，再返回
+             * 当然Session是自动放在response中的Header中的，这里不用做其他处理*//*
             request.getSession();
         } else {
             return "用户名或密码错误";
         }
         return "user/index";
-    }
+    }*/
     //采用shiro 管理登录
     @RequestMapping(value = "login_1", method = RequestMethod.GET)
     public String login_1(String name , String password, Model model){
